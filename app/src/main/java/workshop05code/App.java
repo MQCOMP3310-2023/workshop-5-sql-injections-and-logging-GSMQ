@@ -38,15 +38,15 @@ public class App {
 
         wordleDatabaseConnection.createNewDatabase("words.db");
         if (wordleDatabaseConnection.checkIfConnectionDefined()) {
-            System.out.println("Wordle created and connected.");
+            logger.log(Level.INFO,"Wordle created and connected.");
         } else {
-            System.out.println("Not able to connect. Sorry!");
+            logger.log(Level.WARNING,"Not able to connect. Sorry!");
             return;
         }
         if (wordleDatabaseConnection.createWordleTables()) {
-            System.out.println("Wordle structures in place.");
+            logger.log(Level.INFO,"Wordle structures in place.");
         } else {
-            System.out.println("Not able to launch. Sorry!");
+            logger.log(Level.WARNING,"Not able to launch. Sorry!");
             return;
         }
 
@@ -56,14 +56,19 @@ public class App {
             String line;
             int i = 1;
             while ((line = br.readLine()) != null) {
-                System.out.println(line);
                 wordleDatabaseConnection.addValidWord(i, line);
+                if(wordleDatabaseConnection.isValidWord(line)){
+                    logger.log(Level.FINE,line);
+                }else{
+                    logger.log(Level.SEVERE, "Invalid Word in Database, remove '" + line + "' or use a different Database");
+
+                }
                 i++;
             }
 
         } catch (IOException e) {
             System.out.println("Not able to load . Sorry!");
-            System.out.println(e.getMessage());
+            logger.log(Level.WARNING,e.getMessage());
             return;
         }
 
@@ -78,6 +83,7 @@ public class App {
                 if (wordleDatabaseConnection.isValidWord(guess)) { 
                     System.out.println("Success! It is in the the list.\n");
                 }else{
+                    System.out.println("NOT A VALID WORD!");
                     System.out.println("Sorry. This word is NOT in the the list.\n");
                 }
 
