@@ -73,14 +73,8 @@ public class App {
             String s = "Enter a 4 letter word for a guess or q to quit: ";
             System.out.print(s);
             String guess = scanner.nextLine();
-            if(!(guess.matches("\\p{javaLowerCase}+") && guess.length() == 4)){
-                System.out.println("NOT VALID INPUT!");
-                System.out.print(s);
-                guess = scanner.nextLine();
-            }
             while (!guess.equals("q")) {
                 System.out.println("You've guessed '" + guess+"'.");
-
                 if (wordleDatabaseConnection.isValidWord(guess)) { 
                     System.out.println("Success! It is in the the list.\n");
                 }else{
